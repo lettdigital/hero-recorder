@@ -24,12 +24,23 @@ const createWindow = (): void => {
   mainWindow.webContents.once('dom-ready', () => {
     mainWindow.webContents.executeJavaScript(`
     const { ipcRenderer } = require('electron')
-    document.addEventListener('click', function(ev){
-      ipcRenderer.send('clickEvent', JSON.stringify(ev.path, ["path"]));
+    window.addEventListener('click', (e) => {
+      const path = e.path.map(node => {
+          let path = node.localName;
+          if (node.id) {
+              path += "#"+node.id;
+          }
+          if (node.className) {
+              const classList = node.className.replace(" ", ".");
+              path += "."+classList;
+          }
+          return path
+      }).join(" > ");
+    ipcRenderer.send('clickEvent', path);
     })
     `, true)
     ipcMain.on('clickEvent', (event, data) => {
-      console.log(event, data);
+      console.log(data);
     })
   });
 };

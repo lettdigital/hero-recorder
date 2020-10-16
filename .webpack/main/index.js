@@ -1333,7 +1333,7 @@ var createWindow = function () {
         }
     });
     // and load the index.html of the app.
-    mainWindow.loadURL("http://google.com");
+    mainWindow.loadURL("http://twitter.com");
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
     mainWindow.webContents.once('dom-ready', function () {

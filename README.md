@@ -7,11 +7,14 @@ Use a package manager of your choice (npm, yarn, etc.) in order to install all d
 
 ```bash
 npm install
-go to @medv/finder in node modules and change the export function finder to module.exports = finder
 ```
 
 ```bash
 yarn install
+```
+
+```bash
+go to @medv/finder in node modules and change the export function finder to module.exports = finder
 ```
 
 ## Usage

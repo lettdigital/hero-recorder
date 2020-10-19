@@ -5,40 +5,39 @@ import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electro
 
 let mainWindow: Electron.BrowserWindow | null
 
-
 // const { ipcRenderer } = require('electron')
-//     const finder = require('@medv/finder')
-//     window.addEventListener('click', (event) => {
-//       const selector = finder(event.target, {
-//         root: document.body,
-//         className: (name) => true,
-//         tagName: (name) => true,
-//         attr: (name, value) => false,
-//         seedMinLength: 1,
-//         optimizedMinLength: 2,
-//         threshold: 1000,
-//         maxNumberOfTries: 10_000,
-//       })
-//     ipcRenderer.send('clickEvent', selector);
+//     window.addEventListener('click', (e) => {
+//       const path = e.path.map(node => {
+//           let path = node.localName;
+//           if (node.id) {
+//               path += "#"+node.id;
+//           }
+//           if (node.className) {
+//               const classList = node.className.replace(" ", ".");
+//               path += "."+classList;
+//           }
+//           return path
+//       }).join(" > ");
+//     ipcRenderer.send('clickEvent', path);
 //     })
 
 function injectEventListeners(window: BrowserWindow | null): void {
   window?.webContents.executeJavaScript(`
-    const { ipcRenderer } = require('electron')
-    window.addEventListener('click', (e) => {
-      const path = e.path.map(node => {
-          let path = node.localName;
-          if (node.id) {
-              path += "#"+node.id;
-          }
-          if (node.className) {
-              const classList = node.className.replace(" ", ".");
-              path += "."+classList;
-          }
-          return path
-      }).join(" > ");
-    ipcRenderer.send('clickEvent', path);
+  const { ipcRenderer } = require('electron')
+  const finder = require('@medv/finder')
+  window.addEventListener('click', (event) => {
+    const selector = finder(event.target, {
+      root: document.body,
+      className: (name) => true,
+      tagName: (name) => true,
+      attr: (name, value) => false,
+      seedMinLength: 1,
+      optimizedMinLength: 2,
+      threshold: 1000,
+      maxNumberOfTries: 10_000,
     })
+  ipcRenderer.send('clickEvent', selector);
+  })
     `, true)
 }
 
